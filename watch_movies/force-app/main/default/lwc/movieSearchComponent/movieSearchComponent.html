@@ -1,0 +1,37 @@
+<template>
+    <lightning-card title="Movie Search">
+        <!-- Search input and button -->
+        <div class="search-container">
+            <lightning-input class="search-term" label="Search Term" value={searchTerm} onchange={handleSearchTermChange}></lightning-input>
+            <lightning-button class="search-button" label="Search" onclick={handleSearch}></lightning-button>
+        </div>
+
+        <!-- Display search results -->
+        <template if:true={searchResults}>
+            <div class="results-container">
+                <template for:each={searchResults} for:item="movie">
+                    <div key={movie.imdbID} class="movie-item">
+                        <div class="movie-details">
+                            <img src={movie.poster} alt={movie.title} />
+                            <p class="movie-title">{movie.title} ({movie.year})</p>
+                            <p class="movie-rating">IMDB Rating: {movie.imdbRating}</p>
+                        </div>
+                        <div class="movie-actions">
+                            <!-- Buttons for actions -->
+                            <lightning-button variant="brand" label="View Details" onclick={handleViewDetails} data-imdbid={movie.imdbID}></lightning-button>
+                            <lightning-button variant="neutral" label="Add to Watch Later" onclick={handleAddToWatchLater} data-imdbid={movie.imdbID}></lightning-button>
+                            <lightning-button variant="destructive" label="Add to Favorites" onclick={handleAddToFavorites} data-imdbid={movie.imdbID}></lightning-button>
+                            <!-- Date input for Watch Later -->
+                            <lightning-input type="date" label="Watch Later Date" data-imdbid={movie.imdbID} onchange={handleWatchLaterDateChange}></lightning-input>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!-- Display error message if there's an issue -->
+        <template if:true={error}>
+            <p class="error-message">Error: {error}</p>
+        </template>
+    </lightning-card>
+</template>
